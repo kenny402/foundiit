@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layouts/main :: head('Submit Claim')}"></head>
+
+<body>
+    <nav th:replace="~{layouts/main :: navbar}"></nav>
+
+    <main class="container" style="padding: 3rem 0;">
+        <div class="glass-card" style="max-width: 600px; margin: 0 auto;">
+            <h1>Claim Proof</h1>
+            <p style="color: var(--muted); margin-bottom: 2rem;">Please provide proof that this item belongs to you.</p>
+
+            <div class="card" style="margin-bottom: 2rem; background: #f8fafc;">
+                <h3 th:text="${item.title}">Item Title</h3>
+                <p th:text="${item.location}" style="font-size: 0.875rem; color: var(--muted);">Location</p>
+            </div>
+
+            <form th:action="@{/claims/submit}" th:object="${claim}" method="post">
+                <input type="hidden" name="itemId" th:value="${item.id}">
+
+                <div class="form-group">
+                    <label>Proof of Ownership</label>
+                    <textarea th:field="*{proofDescription}" class="form-control" rows="6"
+                        placeholder="Describe unique features, contents, or circumstances that prove you are the owner..."
+                        required></textarea>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Claim Request</button>
+                    <a th:href="@{'/items/' + ${item.id}}"
+                        style="display: block; text-align: center; margin-top: 1rem; color: var(--secondary); text-decoration: none;">Go
+                        Back</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer th:replace="~{layouts/main :: footer}"></footer>
+</body>
+
+</html>

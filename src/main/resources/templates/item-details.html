@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layouts/main :: head('Item Details')}"></head>
+
+<body>
+    <nav th:replace="~{layouts/main :: navbar}"></nav>
+
+    <main class="container" style="padding: 3rem 0;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
+            <div>
+                <div
+                    style="background: #fff; border: 1px solid #e2e8f0; border-radius: 1rem; overflow: hidden; height: 400px; display: flex; align-items: center; justify-content: center;">
+                    <img th:if="${item.image}" th:src="@{'/uploads/' + ${item.image}}"
+                        style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                    <div th:unless="${item.image}" style="text-align: center; color: var(--muted);">
+                        <svg style="width: 48px; height: 48px; margin-bottom: 1rem;" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                        <p>No Image Available</p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <span th:text="${item.type}"
+                    th:style="${item.type.name() == 'LOST' ? 'color: var(--danger);' : 'color: var(--success);'}"
+                    style="font-weight: 700; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">TYPE</span>
+                <h1 th:text="${item.title}" style="font-size: 2.5rem; margin: 0.5rem 0 1.5rem;">Item Title</h1>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                    <div>
+                        <p style="color: var(--muted); font-size: 0.875rem;">Category</p>
+                        <p th:text="${item.category}" style="font-weight: 600;">Category</p>
+                    </div>
+                    <div>
+                        <p style="color: var(--muted); font-size: 0.875rem;">Location</p>
+                        <p th:text="${item.location}" style="font-weight: 600;">Location</p>
+                    </div>
+                    <div>
+                        <p style="color: var(--muted); font-size: 0.875rem;">Reported By</p>
+                        <p th:text="${item.user.name}" style="font-weight: 600;">Username</p>
+                    </div>
+                    <div>
+                        <p style="color: var(--muted); font-size: 0.875rem;">Date Reported</p>
+                        <p th:text="${#temporals.format(item.createdAt, 'MMM dd, yyyy')}" style="font-weight: 600;">Date
+                        </p>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 2.5rem;">
+                    <p style="color: var(--muted); font-size: 0.875rem; margin-bottom: 0.5rem;">Detailed Description</p>
+                    <p th:text="${item.description}"
+                        style="background: white; padding: 1rem; border-radius: 0.5rem; border-left: 4px solid var(--primary);">
+                        Description text...</p>
+                </div>
+
+                <div th:if="${item.status.name() != 'CLAIMED'}" sec:authorize="isAuthenticated()">
+                    <a th:href="@{'/claims/item/' + ${item.id}}" class="btn btn-primary"
+                        style="padding: 1rem 2rem;">Submit a Claim Request</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer th:replace="~{layouts/main :: footer}"></footer>
+</body>
+
+</html>

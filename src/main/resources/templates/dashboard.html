@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layouts/main :: head('Dashboard')}"></head>
+
+<body>
+    <nav th:replace="~{layouts/main :: navbar}"></nav>
+
+    <main class="container" style="padding: 2rem 0;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h1>Your Dashboard</h1>
+            <a th:href="@{/items/report}" class="btn btn-primary">+ Report Item</a>
+        </div>
+
+        <div class="card" style="margin-bottom: 3rem;">
+            <h3>All Items Overview</h3>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                <thead>
+                    <tr style="border-bottom: 2px solid #f1f5f9; text-align: left;">
+                        <th style="padding: 1rem;">Item</th>
+                        <th style="padding: 1rem;">Type</th>
+                        <th style="padding: 1rem;">Location</th>
+                        <th style="padding: 1rem;">Status</th>
+                        <th style="padding: 1rem;">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${items}" style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 1.5rem;">
+                            <a th:href="@{'/items/' + ${item.id}}" th:text="${item.title}"
+                                style="color: var(--primary); text-decoration: none; font-weight: 500;">Title</a>
+                        </td>
+                        <td th:text="${item.type}" style="padding: 1.5rem;">TYPE</td>
+                        <td th:text="${item.location}" style="padding: 1.5rem;">LOCATION</td>
+                        <td style="padding: 1.5rem;">
+                            <span th:text="${item.status}"
+                                style="font-size: 0.875rem; color: var(--muted);">STATUS</span>
+                        </td>
+                        <td th:text="${#temporals.format(item.createdAt, 'MMM dd, yyyy')}" style="padding: 1.5rem;">DATE
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer th:replace="~{layouts/main :: footer}"></footer>
+</body>
+
+</html>

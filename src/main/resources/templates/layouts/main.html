@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} + ' | FoundIt+'">FoundIt+</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav th:fragment="navbar">
+        <div class="container nav-content">
+            <a th:href="@{/}" class="logo">FoundIt+</a>
+            <div class="nav-links">
+                <a th:href="@{/}">Home</a>
+                <a th:href="@{/dashboard}" sec:authorize="isAuthenticated()">Dashboard</a>
+                <a th:href="@{/items/report}" sec:authorize="isAuthenticated()">Report Item</a>
+                
+                <div sec:authorize="isAnonymous()">
+                    <a th:href="@{/login}" class="btn btn-primary" style="color: white;">Login</a>
+                    <a th:href="@{/register}">Register</a>
+                </div>
+                
+                <div sec:authorize="isAuthenticated()" style="display: flex; gap: 1rem; align-items: center;">
+                    <span th:text="${#authentication.name}" style="font-weight: 600;">Username</span>
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="btn" style="background: transparent; color: var(--danger);">Logout</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <footer th:fragment="footer" style="margin-top: 4rem; padding: 2rem 0; text-align: center; border-top: 1px solid #e2e8f0; color: var(--muted);">
+        <p>&copy; 2026 FoundIt+ . Smart Lost & Found System</p>
+    </footer>
+</body>
+</html>

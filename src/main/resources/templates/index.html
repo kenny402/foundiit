@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{layouts/main :: head('Home')}"></head>
+
+<body>
+    <nav th:replace="~{layouts/main :: navbar}"></nav>
+
+    <header class="hero">
+        <div class="container">
+            <h1>Find What's Lost, Return What's Found</h1>
+            <p style="font-size: 1.25rem; color: var(--secondary); max-width: 600px; margin: 0 auto;">
+                FoundIt+ is the smartest way to recover your lost belongings within your community.
+            </p>
+            <div style="margin-top: 2.5rem; display: flex; gap: 1rem; justify-content: center;">
+                <a th:href="@{/items/report}" class="btn btn-primary">Report an Item</a>
+                <a th:href="@{/dashboard}" class="btn"
+                    style="border: 1px solid var(--primary); color: var(--primary);">Browse Items</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2 style="margin-bottom: 2rem;">Recent Items</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem;">
+            <div th:each="item : ${items}" class="card">
+                <div
+                    style="height: 180px; background: #f1f5f9; border-radius: 0.5rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                    <img th:if="${item.image}" th:src="@{'/uploads/' + ${item.image}}"
+                        style="width: 100%; height: 100%; object-fit: cover;">
+                    <span th:unless="${item.image}" style="color: var(--muted);">No Image</span>
+                </div>
+                <div
+                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                    <h3 th:text="${item.title}">Item Title</h3>
+                    <span th:text="${item.type}"
+                        th:classappend="${item.type.name() == 'LOST' ? 'badge-danger' : 'badge-success'}"
+                        style="font-size: 0.75rem; padding: 0.25rem 0.5rem; border-radius: 1rem; font-weight: 700; background: #e2e8f0;">TYPE</span>
+                </div>
+                <p th:text="${item.location}" style="font-size: 0.875rem; color: var(--muted); margin-bottom: 1rem;">
+                    Location</p>
+                <a th:href="@{'/items/' + ${item.id}}" class="btn btn-primary" style="width: 100%;">View Details</a>
+            </div>
+        </div>
+    </main>
+
+    <footer th:replace="~{layouts/main :: footer}"></footer>
+</body>
+
+</html>

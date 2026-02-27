@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layouts/main :: head('Register')}"></head>
+
+<body style="display: flex; flex-direction: column; min-h-screen;">
+    <nav th:replace="~{layouts/main :: navbar}"></nav>
+
+    <main style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem;">
+        <div class="glass-card" style="width: 100%; max-width: 400px;">
+            <h1 style="text-align: center; margin-bottom: 1.5rem;">Join FoundIt+</h1>
+
+            <form th:action="@{/register}" th:object="${user}" method="post">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" th:field="*{name}" class="form-control" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" th:field="*{email}" class="form-control" required
+                        placeholder="name@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" th:field="*{password}" class="form-control" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Register</button>
+            </form>
+            <p style="text-align: center; margin-top: 1.5rem; color: var(--muted);">
+                Already have an account? <a th:href="@{/login}" style="color: var(--primary);">Login here</a>
+            </p>
+        </div>
+    </main>
+
+    <footer th:replace="~{layouts/main :: footer}"></footer>
+</body>
+
+</html>
