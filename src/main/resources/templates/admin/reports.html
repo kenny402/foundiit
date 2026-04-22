@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>System Reports - FoundIt+ Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Outfit', 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+        }
+
+        .admin-sidebar {
+            background: #0F172A;
+            min-height: 100vh;
+            color: white;
+            padding: 30px 20px;
+        }
+
+        .nav-link-custom {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .nav-link-custom:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        .nav-link-custom.active {
+            background: #1A56DB;
+            color: white;
+        }
+
+        .admin-header {
+            padding: 30px 40px;
+            background: white;
+            border-bottom: 1px solid #E2E8F0;
+            margin-bottom: 40px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748B;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: all 0.2s;
+            background: #F1F5F9;
+        }
+
+        .back-btn:hover {
+            color: #1E293B;
+            background: #E2E8F0;
+        }
+
+        .report-card {
+            border: none;
+            border-radius: 24px;
+            padding: 40px;
+            background: white;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s;
+            height: 100%;
+        }
+
+        .report-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
+        }
+
+        .report-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 24px;
+        }
+
+        .btn-download {
+            border-radius: 14px;
+            padding: 12px;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div class="admin-sidebar" style="width:280px;position:fixed;">
+            <div class="px-3 mb-5">
+                <h4 class="fw-bold"><i class="bi bi-search-heart me-2 text-primary"></i>FoundIt<span
+                        class="text-primary">+</span></h4>
+                <div class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 mt-2"
+                    style="font-size:0.65rem;letter-spacing:1px;">ADMINISTRATOR</div>
+            </div>
+            <nav>
+                <a th:href="@{/admin/dashboard}" class="nav-link-custom"><i class="bi bi-speedometer2"></i>
+                    Dashboard</a>
+                <a th:href="@{/admin/users}" class="nav-link-custom"><i class="bi bi-people"></i> Manage Users</a>
+                <a th:href="@{/admin/items}" class="nav-link-custom"><i class="bi bi-grid-3x3-gap"></i> System
+                    Listings</a>
+                <a th:href="@{/moderator/claims}" class="nav-link-custom"><i class="bi bi-shield-check"></i>
+                    Verification Claims</a>
+                <a th:href="@{/admin/reports}" class="nav-link-custom active"><i class="bi bi-bar-chart"></i> System
+                    Reports</a>
+                <hr class="my-4 opacity-10">
+                <a th:href="@{/}" class="nav-link-custom"><i class="bi bi-eye"></i> View Public Site</a>
+                <a th:href="@{/logout}" class="nav-link-custom text-danger"><i class="bi bi-box-arrow-right"></i>
+                    Logout</a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div style="flex:1;margin-left:280px;">
+            <div class="admin-header d-flex justify-content-between align-items-center">
+                <div>
+                    <a th:href="@{/admin/dashboard}" class="back-btn mb-2">
+                        <i class="bi bi-arrow-left"></i> Dashboard
+                    </a>
+                    <h2 class="fw-bold mb-0">System Reports</h2>
+                </div>
+                <div class="text-muted small">Analyze data and download system registers</div>
+            </div>
+
+            <div class="px-5 pb-5">
+                <div class="row g-4 justify-content-center">
+                    <div class="col-md-5">
+                        <div class="report-card">
+                            <div class="report-icon" style="background:#F0FDF4;color:#16A34A;"><i
+                                    class="bi bi-file-earmark-excel"></i></div>
+                            <h4 class="fw-bold text-dark">Excel Register</h4>
+                            <p class="text-muted mb-4 px-3">Download a complete spreadsheet of every lost and found item
+                                recorded in the system.</p>
+                            <a th:href="@{/admin/reports/export/excel}"
+                                class="btn btn-success btn-download w-100 shadow-sm">
+                                <i class="bi bi-download me-2"></i>Download Excel (.xlsx)
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="report-card">
+                            <div class="report-icon" style="background:#FEF2F2;color:#DC2626;"><i
+                                    class="bi bi-file-earmark-pdf"></i></div>
+                            <h4 class="fw-bold text-dark">PDF Summary</h4>
+                            <p class="text-muted mb-4 px-3">Generate a formatted PDF document containing system
+                                statistics and key data summaries.</p>
+                            <a th:href="@{/admin/reports/export/pdf}"
+                                class="btn btn-danger btn-download w-100 shadow-sm">
+                                <i class="bi bi-download me-2"></i>Download PDF (.pdf)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-5 text-center p-5 bg-white rounded-5 shadow-sm mx-auto" style="max-width:800px;">
+                    <i class="bi bi-graph-up-arrow fs-1 text-primary mb-3"></i>
+                    <h5 class="fw-bold">Looking for real-time stats?</h5>
+                    <p class="text-muted">The main admin dashboard contains live monitoring of successful matches and
+                        active claims.</p>
+                    <a th:href="@{/admin/dashboard}" class="btn btn-outline-primary rounded-pill px-5 fw-bold mt-2">Go
+                        to Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,52 +1,21 @@
 package com.student.foundiit.service;
 
-import com.student.foundiit.exception.ResourceNotFoundException;
 import com.student.foundiit.model.Claim;
-import com.student.foundiit.repository.ClaimRepository;
-import org.springframework.stereotype.Service;
+import com.student.foundiit.model.ClaimStatus;
+import com.student.foundiit.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@Service
-public class ClaimService {
-
-    private final ClaimRepository claimRepository;
-
-    public ClaimService(ClaimRepository claimRepository) {
-        this.claimRepository = claimRepository;
-    }
-
-    public Claim submitClaim(Claim claim) {
-        return claimRepository.save(claim);
-    }
-
-    public List<Claim> getAllClaims() {
-        return claimRepository.findAll();
-    }
-
-    public Claim findById(Long id) {
-        return claimRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Claim not found with id: " + id));
-    }
-
-    public List<Claim> getClaimsByItem(Long itemId) {
-        return claimRepository.findByItemId(itemId);
-    }
-
-    public List<Claim> getClaimsByUser(Long userId) {
-        return claimRepository.findByUserId(userId);
-    }
-
-    public void updateClaimStatus(Long id, Claim.Status status) {
-        Claim claim = findById(id);
-        claim.setStatus(status);
-        claimRepository.save(claim);
-    }
-
-    public void deleteClaim(Long id) {
-        if (!claimRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Claim not found with id: " + id);
-        }
-        claimRepository.deleteById(id);
-    }
+public interface ClaimService {
+    Claim submitClaim(Long itemId, String proofDescription, MultipartFile proofImage, User claimant);
+    Claim findById(Long claimId);
+    Claim approveClaim(Long claimId, User reviewer, String notes);
+    Claim rejectClaim(Long claimId, User reviewer, String notes);
+    List<Claim> getClaimsByUser(User user);
+    Page<Claim> getPendingClaims(Pageable pageable);
+    Page<Claim> getAllClaims(Pageable pageable);
+    long countByStatus(ClaimStatus status);
 }

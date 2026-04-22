@@ -1,0 +1,150 @@
+<!-- User Navbar Fragment -->
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark sticky-top" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+    style="background:linear-gradient(135deg,#1A56DB,#1e40af)!important;box-shadow:0 2px 20px rgba(26,86,219,0.3);">
+    <div class="container">
+        <a class="navbar-brand fw-bold" th:href="@{/}" style="font-size:1.4rem;letter-spacing:-0.5px;">
+            <i class="bi bi-search-heart me-2"></i>Found<span style="color:#93C5FD;">It+</span>
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav me-auto ms-3">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/items/list}"><i class="bi bi-grid me-1"></i>Browse Items</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{/items/report}"><i class="bi bi-plus-circle me-1"></i>Report Item</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{/items/my-items}"><i class="bi bi-collection me-1"></i>My Items</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{/claims/my-claims}"><i class="bi bi-clipboard-check me-1"></i>My
+                        Claims</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto align-items-center">
+                <!-- Notification bell -->
+                <li class="nav-item me-2" sec:authorize="isAuthenticated()">
+                    <a class="nav-link position-relative" th:href="@{/notifications}">
+                        <i class="bi bi-bell fs-5"></i>
+                        <span th:if="${unreadCount != null and unreadCount > 0}"
+                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                            style="font-size:0.6rem;" th:text="${unreadCount}">0</span>
+                    </a>
+                </li>
+                <!-- User dropdown -->
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle fs-5 me-1"></i>
+                        <span th:text="${currentUser != null ? currentUser.name : 'Account'}">User</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0"
+                        style="border-radius:12px;min-width:220px;">
+                        <li><a class="dropdown-item py-2" th:href="@{/dashboard}"><i
+                                    class="bi bi-speedometer2 me-2 text-primary"></i>Dashboard</a></li>
+                        <li><a class="dropdown-item py-2" th:href="@{/items/my-items}"><i
+                                    class="bi bi-collection me-2 text-primary"></i>My Items</a></li>
+                        <li><a class="dropdown-item py-2" th:href="@{/claims/my-claims}"><i
+                                    class="bi bi-clipboard-check me-2 text-primary"></i>My Claims</a></li>
+                        <li><a class="dropdown-item py-2" th:href="@{/notifications}"><i
+                                    class="bi bi-bell me-2 text-primary"></i>Notifications</a></li>
+                        <li
+                            sec:authorize="hasAnyAuthority('ROLE_MODERATOR','ROLE_moderator','ROLE_ADMIN','ROLE_admin')">
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li
+                            sec:authorize="hasAnyAuthority('ROLE_MODERATOR','ROLE_moderator','ROLE_ADMIN','ROLE_admin')">
+                            <a class="dropdown-item py-2 fw-semibold" th:href="@{/moderator/claims}"><i
+                                    class="bi bi-shield-check me-2 text-warning"></i>Review Claims</a>
+                        </li>
+                        <li sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_admin')">
+                            <a class="dropdown-item py-2 fw-semibold" th:href="@{/admin/dashboard}"><i
+                                    class="bi bi-gear me-2 text-danger"></i>Admin Panel</a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item py-2 text-danger" th:href="@{/logout}"><i
+                                    class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                    </ul>
+                </li>
+                <!-- Guest buttons -->
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link btn btn-outline-light btn-sm px-3 me-2" style="border-radius:8px;"
+                        th:href="@{/login}">
+                        <i class="bi bi-box-arrow-in-right me-1"></i>Login
+                    </a>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link btn btn-light btn-sm px-3 fw-bold" style="border-radius:8px;color:#1A56DB;"
+                        th:href="@{/register}">
+                        <i class="bi bi-person-plus me-1"></i>Register
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Admin Navbar Fragment -->
+<nav th:fragment="admin-navbar" class="navbar navbar-expand-lg navbar-dark sticky-top"
+    xmlns:th="http://www.thymeleaf.org"
+    style="background:linear-gradient(135deg,#0F172A,#1E293B)!important;box-shadow:0 2px 20px rgba(0,0,0,0.3);">
+    <div class="container">
+        <a class="navbar-brand fw-bold" th:href="@{/admin/dashboard}" style="font-size:1.4rem;letter-spacing:-0.5px;">
+            <i class="bi bi-search-heart me-2"></i>Found<span style="color:#F59E0B;">It+</span>
+            <span class="badge bg-danger ms-2" style="font-size:0.6rem;vertical-align:middle;">ADMIN</span>
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="adminNav">
+            <ul class="navbar-nav me-auto ms-3">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/dashboard}"><i
+                            class="bi bi-speedometer2 me-1"></i>Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/users}"><i class="bi bi-people me-1"></i>Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/items}"><i class="bi bi-grid me-1"></i>Items</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/moderator/claims}"><i class="bi bi-shield-check me-1"></i>Claims</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/reports}"><i class="bi bi-bar-chart me-1"></i>Reports</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item me-3">
+                    <a class="nav-link btn btn-outline-light btn-sm px-3" style="border-radius:8px;"
+                        th:href="@{/items/list}">
+                        <i class="bi bi-eye me-1"></i>View Site
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle fs-5 me-1"></i>
+                        <span th:text="${currentUser != null ? currentUser.name : 'Admin'}">Admin</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="border-radius:12px;">
+                        <li><a class="dropdown-item py-2" th:href="@{/items/my-items}"><i
+                                    class="bi bi-collection me-2"></i>My Items</a></li>
+                        <li><a class="dropdown-item py-2" th:href="@{/notifications}"><i
+                                    class="bi bi-bell me-2"></i>Notifications</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item py-2 text-danger" th:href="@{/logout}"><i
+                                    class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

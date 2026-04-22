@@ -1,0 +1,180 @@
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: text/html;charset=UTF-8
+Content-Language: en-US
+Transfer-Encoding: chunked
+Date: Sun, 12 Apr 2026 21:17:02 GMT
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Report Item - FoundIt+</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+body{background:#f8fafc;}
+.navbar{background:linear-gradient(135deg,#1A56DB,#0EA5E9)!important;}
+.form-card{border:none;border-radius:20px;box-shadow:0 8px 40px rgba(0,0,0,0.08);padding:40px;}
+.form-control,.form-select{border:2px solid #E2E8F0;border-radius:10px;padding:12px;}
+.form-control:focus,.form-select:focus{border-color:#1A56DB;box-shadow:none;}
+.btn-submit{background:linear-gradient(135deg,#1A56DB,#0EA5E9);color:white;border:none;padding:14px;border-radius:10px;font-weight:700;font-size:1rem;width:100%;}
+.btn-submit:hover{color:white;opacity:0.9;}
+.type-btn{border:2px solid #E2E8F0;border-radius:10px;padding:16px;cursor:pointer;text-align:center;transition:all 0.2s;}
+.type-btn.selected-lost{border-color:#DC2626;background:#FEF2F2;color:#DC2626;}
+.type-btn.selected-found{border-color:#16A34A;background:#F0FDF4;color:#16A34A;}
+.upload-area{border:2px dashed #CBD5E1;border-radius:12px;padding:40px;text-align:center;cursor:pointer;transition:all 0.2s;}
+.upload-area:hover{border-color:#1A56DB;background:#EFF6FF;}
+</style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+<div class="container">
+<a class="navbar-brand fw-bold" href="/"><i class="bi bi-search-heart me-2"></i>FoundIt+</a>
+<div class="collapse navbar-collapse">
+<ul class="navbar-nav me-auto ms-3">
+<li class="nav-item"><a class="nav-link" href="/items/list">Browse Items</a></li>
+<li class="nav-item"><a class="nav-link" href="/items/my-items">My Items</a></li>
+</ul>
+<a href="/logout" class="btn btn-outline-light btn-sm">Logout</a>
+</div>
+</div>
+</nav>
+
+<div class="container mt-4 mb-5" style="max-width:800px;">
+<h2 class="fw-bold mb-1"><i class="bi bi-plus-circle me-2 text-primary"></i>Report an Item</h2>
+<p class="text-muted mb-4">Fill in the details about your lost or found item</p>
+
+<div class="form-card bg-white">
+<form action="/items/report" method="post" enctype="multipart/form-data"><input type="hidden" name="_csrf" value="MAFuCv1LoIuusfsstOu_Wqt1t2Xz_vzH7jgkH1DMzJchEmCwBzhaOpsuk-6DgM8e1caLa55EmgfAx8Tq1loQJjH6-6MUJ1GH"/>
+
+
+
+<div class="mb-4">
+<label class="form-label fw-bold">I want to report a: <span class="text-danger">*</span></label>
+<div class="row g-3">
+<div class="col-6">
+<div class="type-btn" id="btn-lost" onclick="selectType('LOST')">
+<i class="bi bi-exclamation-circle fs-3 text-danger d-block mb-2"></i>
+<div class="fw-bold">Lost Item</div>
+<div class="small text-muted">I lost something</div>
+</div>
+</div>
+<div class="col-6">
+<div class="type-btn" id="btn-found" onclick="selectType('FOUND')">
+<i class="bi bi-check-circle fs-3 text-success d-block mb-2"></i>
+<div class="fw-bold">Found Item</div>
+<div class="small text-muted">I found something</div>
+</div>
+</div>
+</div>
+<input type="hidden" id="statusInput" required name="status" value="">
+
+</div>
+
+<div class="mb-3">
+<label class="form-label fw-semibold">Item Title <span class="text-danger">*</span></label>
+<input type="text" class="form-control" placeholder="e.g. Black iPhone 14, Blue Backpack..." id="title" name="title" value="">
+
+</div>
+
+<div class="row g-3 mb-3">
+<div class="col-md-6">
+<label class="form-label fw-semibold">Category <span class="text-danger">*</span></label>
+<select class="form-select" id="categoryId" name="categoryId">
+<option value="">-- Select a category --</option>
+<option value="4">Accessories</option>
+<option value="16">Accessories</option>
+<option value="5">Bags</option>
+<option value="18">Bags &amp; Wallets</option>
+<option value="9">Books</option>
+<option value="14">Books</option>
+<option value="3">Clothing</option>
+<option value="15">Clothing</option>
+<option value="2">Documents</option>
+<option value="17">Documents</option>
+<option value="1">Electronics</option>
+<option value="13">Electronics</option>
+<option value="10">ID Cards</option>
+<option value="6">Jewelry</option>
+<option value="7">Keys</option>
+<option value="19">Keys</option>
+<option value="8">Mobile Phones</option>
+<option value="11">Money &amp; Wallets</option>
+<option value="21">Other</option>
+<option value="12">Others</option>
+<option value="20">Sports Equipment</option>
+</select>
+
+</div>
+<div class="col-md-6">
+<label class="form-label fw-semibold">Date of Incident <span class="text-danger">*</span></label>
+<input type="date" class="form-control" id="dateCreated" name="dateCreated" value="">
+
+</div>
+</div>
+
+<div class="mb-3">
+<label class="form-label fw-semibold">Description <span class="text-danger">*</span></label>
+<textarea class="form-control" rows="4"
+          placeholder="Describe the item in detail - color, size, markings, contents..." id="description" name="description"></textarea>
+
+</div>
+
+<div class="mb-3">
+<label class="form-label fw-semibold">Location <span class="text-danger">*</span></label>
+<input type="text" class="form-control" placeholder="Where was it lost/found?" id="location" name="location" value="">
+
+</div>
+
+<div class="row g-3 mb-4">
+<div class="col-md-6">
+<label class="form-label fw-semibold">Color <span class="text-muted small">(optional)</span></label>
+<input type="text" class="form-control" placeholder="e.g. Black, Red, Blue" id="color" name="color" value="">
+</div>
+<div class="col-md-6">
+<label class="form-label fw-semibold">Brand <span class="text-muted small">(optional)</span></label>
+<input type="text" class="form-control" placeholder="e.g. Apple, Samsung, Nike" id="brand" name="brand" value="">
+</div>
+</div>
+
+<div class="mb-4">
+<label class="form-label fw-semibold">Item Image <span class="text-muted small">(optional)</span></label>
+<div class="upload-area" onclick="document.getElementById('imageInput').click()">
+<i class="bi bi-cloud-upload fs-2 text-muted d-block mb-2"></i>
+<div class="fw-semibold text-muted">Click to upload image</div>
+<div class="small text-muted">JPG, PNG up to 10MB</div>
+<div id="fileName" class="small text-primary mt-2"></div>
+</div>
+<input type="file" name="image" id="imageInput" accept="image/*" style="display:none"
+       onchange="document.getElementById('fileName').textContent = this.files[0]?.name || ''">
+</div>
+
+<button type="submit" class="btn btn-submit">
+<i class="bi bi-send me-2"></i>Submit Report
+</button>
+</form>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function selectType(type) {
+  document.getElementById('statusInput').value = type;
+  document.getElementById('btn-lost').className = 'type-btn' + (type === 'LOST' ? ' selected-lost' : '');
+  document.getElementById('btn-found').className = 'type-btn' + (type === 'FOUND' ? ' selected-found' : '');
+}
+// Pre-select if value exists
+var existing = document.getElementById('statusInput').value;
+if (existing) selectType(existing);
+</script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Report Item - FoundIt+</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      font-family: 'Outfit', 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: #f1f5f9;
+    }
+
+    .back-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #64748B;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 8px 16px;
+      border-radius: 10px;
+      transition: all 0.2s;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .back-nav:hover {
+      color: #1A56DB;
+      background: #EFF6FF;
+      transform: translateX(-2px);
+    }
+
+    .form-card {
+      border: none;
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+    }
+
+    .form-header {
+      background: linear-gradient(135deg, #1A56DB, #0EA5E9);
+      padding: 32px;
+      color: white;
+    }
+
+    .form-body {
+      padding: 40px;
+    }
+
+    .form-control,
+    .form-select {
+      border: 2px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 12px 16px;
+      transition: all 0.2s;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: #1A56DB;
+      box-shadow: 0 0 0 4px rgba(26, 86, 219, 0.1);
+      outline: none;
+    }
+
+    .type-btn {
+      border: 2px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 24px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.3s;
+      background: white;
+    }
+
+    .type-btn:hover {
+      border-color: #1A56DB;
+      transform: translateY(-2px);
+    }
+
+    .type-btn.selected-lost {
+      border-color: #DC2626;
+      background: #FEF2F2;
+      color: #DC2626;
+      box-shadow: 0 8px 20px rgba(220, 38, 38, 0.1);
+    }
+
+    .type-btn.selected-found {
+      border-color: #16A34A;
+      background: #F0FDF4;
+      color: #16A34A;
+      box-shadow: 0 8px 20px rgba(22, 163, 74, 0.1);
+    }
+
+    .upload-area {
+      border: 2px dashed #CBD5E1;
+      border-radius: 16px;
+      padding: 48px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #F8FAFC;
+    }
+
+    .upload-area:hover {
+      border-color: #1A56DB;
+      background: #EFF6FF;
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, #1A56DB, #0EA5E9);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(26, 86, 219, 0.2);
+    }
+
+    .btn-submit:hover {
+      opacity: 0.95;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(26, 86, 219, 0.3);
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+  <div class="container mt-4 mb-5" style="max-width:900px;">
+    <!-- Back Button -->
+    <a th:href="@{/}" class="back-nav mb-4">
+      <i class="bi bi-arrow-left"></i>Back to Home
+    </a>
+
+    <div class="form-card bg-white">
+      <div class="form-header">
+        <h2 class="fw-bold mb-1"><i class="bi bi-plus-circle me-3"></i>Report an Item</h2>
+        <p class="mb-0 opacity-80">Please provide accurate details to help with a successful match.</p>
+      </div>
+
+      <div class="form-body">
+        <form th:action="@{/items/report}" method="post" enctype="multipart/form-data" th:object="${itemDto}">
+
+          <div th:if="${error}" class="alert alert-danger border-0 rounded-3 mb-4 d-flex align-items-center">
+            <i class="bi bi-exclamation-circle-fill me-3 fs-5"></i>
+            <span th:text="${error}">Error Message</span>
+          </div>
+
+          <!-- Step 1: Item Type -->
+          <div class="mb-5">
+            <label class="form-label fw-bold mb-3 d-block" style="font-size:1.1rem;">1. What are you reporting? <span
+                class="text-danger">*</span></label>
+            <div class="row g-4">
+              <div class="col-md-6">
+                <div class="type-btn" id="btn-lost" onclick="selectType('LOST')">
+                  <i class="bi bi-exclamation-octagon fs-1 d-block mb-2"></i>
+                  <div class="fw-bold fs-5">I Lost Something</div>
+                  <div class="small opacity-70">Report a missing item</div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="type-btn" id="btn-found" onclick="selectType('FOUND')">
+                  <i class="bi bi-check-circle fs-1 d-block mb-2"></i>
+                  <div class="fw-bold fs-5">I Found Something</div>
+                  <div class="small opacity-70">Report an item you've recovered</div>
+                </div>
+              </div>
+            </div>
+            <input type="hidden" th:field="*{status}" id="status" required>
+            <div th:if="${#fields.hasErrors('status')}" class="text-danger small mt-2 fw-semibold">Please select Lost or
+              Found</div>
+          </div>
+
+          <hr class="my-5 opacity-10">
+
+          <!-- Step 2: Details -->
+          <div class="mb-5">
+            <label class="form-label fw-bold mb-4 d-block" style="font-size:1.1rem;">2. Item Information</label>
+            <div class="row g-4">
+              <div class="col-12">
+                <label class="form-label fw-semibold small text-uppercase">Item Title <span
+                    class="text-danger">*</span></label>
+                <input type="text" th:field="*{title}" class="form-control"
+                  placeholder="e.g. Blue Nike Backpack, Black iPhone 14...">
+                <div th:if="${#fields.hasErrors('title')}" class="text-danger small mt-1" th:errors="*{title}"></div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small text-uppercase">Category <span
+                    class="text-danger">*</span></label>
+                <select th:field="*{categoryId}" class="form-select">
+                  <option value="">-- Select Category --</option>
+                  <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.categoryName}">Category
+                  </option>
+                </select>
+                <div th:if="${#fields.hasErrors('categoryId')}" class="text-danger small mt-1"
+                  th:errors="*{categoryId}"></div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small text-uppercase">Date of Incident <span
+                    class="text-danger">*</span></label>
+                <input type="date" th:field="*{dateCreated}" class="form-control">
+                <div th:if="${#fields.hasErrors('dateCreated')}" class="text-danger small mt-1"
+                  th:errors="*{dateCreated}"></div>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label fw-semibold small text-uppercase">Description <span
+                    class="text-danger">*</span></label>
+                <textarea th:field="*{description}" class="form-control" rows="4"
+                  placeholder="Provide as much detail as possible (color, size, unique markings, model number...)"></textarea>
+                <div th:if="${#fields.hasErrors('description')}" class="text-danger small mt-1"
+                  th:errors="*{description}"></div>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label fw-semibold small text-uppercase">Location <span
+                    class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-geo-alt"></i></span>
+                  <input type="text" th:field="*{location}" class="form-control border-start-0 ps-0"
+                    placeholder="e.g. Library 2nd Floor, Main Entrance...">
+                </div>
+                <div th:if="${#fields.hasErrors('location')}" class="text-danger small mt-1" th:errors="*{location}">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small text-uppercase">Color</label>
+                <input type="text" th:field="*{color}" class="form-control" placeholder="e.g. Silver, Metallic Red">
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small text-uppercase">Brand</label>
+                <input type="text" th:field="*{brand}" class="form-control" placeholder="e.g. Apple, Dell, Sony">
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-5 opacity-10">
+
+          <!-- Step 3: Photo -->
+          <div class="mb-5">
+            <label class="form-label fw-bold mb-4 d-block" style="font-size:1.1rem;">3. Add a Photo <span
+                class="text-muted fw-normal">(Optional)</span></label>
+            <div class="upload-area" id="drop-area" onclick="document.getElementById('imageInput').click()">
+              <i class="bi bi-cloud-arrow-up fs-1 text-primary mb-2 d-block"></i>
+              <div class="fw-bold text-dark">Click to upload photo</div>
+              <div class="small text-muted mb-3">Drag and drop or browse from your computer</div>
+              <div id="fileName" class="badge bg-primary rounded-pill p-2 px-3 d-none"></div>
+            </div>
+            <input type="file" name="image" id="imageInput" accept="image/*" style="display:none"
+              onchange="handleFile(this)">
+          </div>
+
+          <button type="submit" class="btn btn-submit w-100">
+            <i class="bi bi-send-fill me-2"></i>Submit Report
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function selectType(type) {
+      document.getElementById('status').value = type;
+      const btnLost = document.getElementById('btn-lost');
+      const btnFound = document.getElementById('btn-found');
+
+      if (type === 'LOST') {
+        btnLost.className = 'type-btn selected-lost';
+        btnFound.className = 'type-btn';
+      } else {
+        btnFound.className = 'type-btn selected-found';
+        btnLost.className = 'type-btn';
+      }
+    }
+
+    function handleFile(input) {
+      const display = document.getElementById('fileName');
+      if (input.files && input.files[0]) {
+        display.textContent = input.files[0].name;
+        display.classList.remove('d-none');
+      } else {
+        display.classList.add('d-none');
+      }
+    }
+
+    // Check if value preset
+    const current = document.getElementById('status').value;
+    if (current) selectType(current);
+  </script>
+</body>
+
+</html>

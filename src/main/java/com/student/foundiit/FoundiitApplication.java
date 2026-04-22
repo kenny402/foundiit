@@ -5,9 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class FoundiitApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(FoundiitApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(FoundiitApplication.class, args);
+    }
 }

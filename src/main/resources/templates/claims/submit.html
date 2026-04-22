@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: layout(~{::main})}">
+<body>
+    <main>
+        <div class="container pb-5">
+            <div class="row g-5">
+                <!-- Left: Item Summary -->
+                <div class="col-lg-5">
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                        <img th:src="${item.imagePath != null ? '/uploads/' + item.imagePath : '/images/placeholder.jpg'}" 
+                             class="card-img-top" style="height: 250px; object-fit: cover;">
+                        <div class="card-body p-4">
+                            <span class="badge rounded-pill mb-2 px-3" th:classappend="${item.status.badgeClass}" th:text="${item.status.displayName}">STATUS</span>
+                            <h4 class="fw-bold mb-1" th:text="${item.title}">Item Title</h4>
+                            <p class="text-secondary small mb-3"><i class="bi bi-geo-alt me-1"></i> <span th:text="${item.location}">Location</span></p>
+                            <hr class="my-3 opacity-10">
+                            <h6 class="fw-bold small text-uppercase text-muted mb-2">Description</h6>
+                            <p class="text-secondary small" th:text="${item.description}">Description...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning border-0 rounded-4 p-4 shadow-sm">
+                        <div class="d-flex">
+                            <i class="bi bi-shield-lock-fill fs-2 me-3 mt-1"></i>
+                            <div>
+                                <h6 class="fw-bold">Verification Process</h6>
+                                <p class="small mb-0">Submitting a false claim is a violation of our community guidelines. Please provide clear, detailed evidence to prove this item belongs to you.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Claim Form -->
+                <div class="col-lg-7">
+                    <div class="card border-0 shadow-lg rounded-4 p-4 p-md-5">
+                        <h2 class="fw-bold mb-2">Claim Ownership</h2>
+                        <p class="text-secondary mb-5">Please provide proof that you are the rightful owner of this item.</p>
+
+                        <form th:action="@{/claims/submit/{id}(id=${item.id})}" th:object="${claimDto}" method="post" enctype="multipart/form-data">
+                            
+                            <div th:if="${error}" class="alert alert-danger border-0 rounded-3 mb-4">
+                                <i class="bi bi-exclamation-triangle me-2"></i> <span th:text="${error}">Error</span>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">Detailed Proof / Evidence <span class="text-danger">*</span></label>
+                                <textarea th:field="*{proofDescription}" class="form-control bg-light border-0 p-3" rows="6" 
+                                          placeholder="Describe unique features not visible in photos, serial numbers, unusual markings, or what was inside if it's a bag/wallet." 
+                                          th:classappend="${#fields.hasErrors('proofDescription')} ? 'is-invalid'"></textarea>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('proofDescription')}" th:errors="*{proofDescription}"></div>
+                            </div>
+
+                            <div class="mb-5">
+                                <label class="form-label fw-bold">Upload Proof Image (Optional)</label>
+                                <p class="small text-secondary mb-3">Upload a photo of you with the item, a receipt, or a close-up of a unique identifier.</p>
+                                <div class="p-4 border-2 border-dashed border-light bg-light rounded-4 text-center">
+                                    <input type="file" name="proofImage" id="proofInput" class="form-control d-none">
+                                    <button type="button" class="btn btn-secondary px-4 rounded-pill" onclick="document.getElementById('proofInput').click()">
+                                        <i class="bi bi-image me-2"></i>Choose Photo
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-3">
+                                <button type="submit" class="btn btn-primary px-5 py-3 rounded-pill fw-bold shadow flex-grow-1">
+                                    Submit Claim Request <i class="bi bi-send-check ms-2"></i>
+                                </button>
+                                <a th:href="@{/items/{id}(id=${item.id})}" class="btn btn-light px-4 py-3 rounded-pill fw-bold">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

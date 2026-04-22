@@ -1,50 +1,222 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="~{layouts/main :: head('Dashboard')}"></head>
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - FoundIt+</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Outfit', 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+            min-height: 100vh;
+        }
+
+        .dash-hero {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1A56DB 40%, #0EA5E9 100%);
+            padding: 60px 0;
+            color: white;
+            margin-bottom: 40px;
+            border-radius: 0 0 40px 40px;
+        }
+
+        .welcome-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 32px;
+        }
+
+        .quick-action-card {
+            background: white;
+            border: none;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            text-decoration: none;
+            display: block;
+        }
+
+        .quick-action-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .qa-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 16px;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+            overflow: hidden;
+            margin-bottom: 60px;
+        }
+
+        .table thead th {
+            background: #F8FAFC;
+            border-bottom: 2px solid #F1F5F9;
+            padding: 20px 24px;
+            color: #64748B;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .table tbody td {
+            padding: 20px 24px;
+            border-bottom: 1px solid #F1F5F9;
+            vertical-align: middle;
+        }
+
+        .badge-lost {
+            background: #FEF2F2;
+            color: #DC2626;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+        }
+
+        .badge-found {
+            background: #F0FDF4;
+            color: #16A34A;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
 
 <body>
-    <nav th:replace="~{layouts/main :: navbar}"></nav>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-    <main class="container" style="padding: 2rem 0;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-            <h1>Your Dashboard</h1>
-            <a th:href="@{/items/report}" class="btn btn-primary">+ Report Item</a>
+    <!-- Dashboard Hero -->
+    <div class="dash-hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <h1 class="fw-800 fs-1 mb-2">Hello, <span th:text="${#authentication.principal.name}">User</span>!
+                    </h1>
+                    <p class="fs-5 opacity-80 mb-0">Manage your reports, track claims, and find your lost belongings.
+                    </p>
+                </div>
+                <div class="col-lg-5 mt-4 mt-lg-0">
+                    <div class="welcome-card card">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="bg-white rounded-circle d-flex align-items-center justify-content-center text-primary"
+                                style="width:50px;height:50px;">
+                                <i class="bi bi-shield-check fs-4"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold fs-5">Account Status</div>
+                                <div class="small opacity-80">Verified & Active Member</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Quick Actions -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <a th:href="@{/items/list}" class="quick-action-card">
+                    <div class="qa-icon" style="background:#EFF6FF;color:#1A56DB;"><i class="bi bi-search"></i></div>
+                    <h5 class="fw-bold text-dark">Browse All Items</h5>
+                    <p class="text-muted small mb-0">Search the system for lost items</p>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a th:href="@{/items/report}" class="quick-action-card">
+                    <div class="qa-icon" style="background:#F0FDF4;color:#16A34A;"><i class="bi bi-plus-circle"></i>
+                    </div>
+                    <h5 class="fw-bold text-dark">Report New Item</h5>
+                    <p class="text-muted small mb-0">Post a lost or found report</p>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a th:href="@{/claims/my-claims}" class="quick-action-card">
+                    <div class="qa-icon" style="background:#FFFBEB;color:#D97706;"><i class="bi bi-clipboard-check"></i>
+                    </div>
+                    <h5 class="fw-bold text-dark">Track My Claims</h5>
+                    <p class="text-muted small mb-0">Check status of your ownership requests</p>
+                </a>
+            </div>
         </div>
 
-        <div class="card" style="margin-bottom: 3rem;">
-            <h3>All Items Overview</h3>
-            <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
-                <thead>
-                    <tr style="border-bottom: 2px solid #f1f5f9; text-align: left;">
-                        <th style="padding: 1rem;">Item</th>
-                        <th style="padding: 1rem;">Type</th>
-                        <th style="padding: 1rem;">Location</th>
-                        <th style="padding: 1rem;">Status</th>
-                        <th style="padding: 1rem;">Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="item : ${items}" style="border-bottom: 1px solid #f1f5f9;">
-                        <td style="padding: 1.5rem;">
-                            <a th:href="@{'/items/' + ${item.id}}" th:text="${item.title}"
-                                style="color: var(--primary); text-decoration: none; font-weight: 500;">Title</a>
-                        </td>
-                        <td th:text="${item.type}" style="padding: 1.5rem;">TYPE</td>
-                        <td th:text="${item.location}" style="padding: 1.5rem;">LOCATION</td>
-                        <td style="padding: 1.5rem;">
-                            <span th:text="${item.status}"
-                                style="font-size: 0.875rem; color: var(--muted);">STATUS</span>
-                        </td>
-                        <td th:text="${#temporals.format(item.createdAt, 'MMM dd, yyyy')}" style="padding: 1.5rem;">DATE
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- Recent Activity -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold mb-0"><i class="bi bi-clock-history me-2 text-primary"></i>My Recent Reports</h4>
+            <a th:href="@{/items/my-items}" class="btn btn-link text-decoration-none fw-bold">View All <i
+                    class="bi bi-arrow-right"></i></a>
         </div>
-    </main>
 
-    <footer th:replace="~{layouts/main :: footer}"></footer>
+        <div class="table-container mb-5">
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th>Item Description</th>
+                            <th>Type</th>
+                            <th>Location</th>
+                            <th>Date Posted</th>
+                            <th class="text-end px-4">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${items}">
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="bg-light rounded-3 p-2 text-muted"><i class="bi bi-box-seam"></i></div>
+                                    <div class="fw-bold text-dark" th:text="${item.title}">Title</div>
+                                </div>
+                            </td>
+                            <td>
+                                <span th:if="${item.status.name() == 'LOST'}" class="badge-lost">LOST</span>
+                                <span th:if="${item.status.name() == 'FOUND'}" class="badge-found">FOUND</span>
+                            </td>
+                            <td class="text-muted small"><i class="bi bi-geo-alt me-1"></i> <span
+                                    th:text="${item.location}">Location</span></td>
+                            <td class="text-muted small" th:text="${item.dateCreated}">Date</td>
+                            <td class="text-end px-4">
+                                <a th:href="@{'/items/' + ${item.id}}"
+                                    class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-bold">Manage</a>
+                            </td>
+                        </tr>
+                        <tr th:if="${items == null or items.empty}">
+                            <td colspan="5" class="text-center py-5">
+                                <p class="text-muted mb-0">No active reports. Start by reporting an item!</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

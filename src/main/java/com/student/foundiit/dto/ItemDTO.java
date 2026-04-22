@@ -1,81 +1,48 @@
 package com.student.foundiit.dto;
 
-import com.student.foundiit.model.Item;
-import lombok.AllArgsConstructor;
+import com.student.foundiit.model.ItemStatus;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-public class ItemDTO {
-    private Long id;
+@Data
+public class ItemDto {
+
+    @NotBlank(message = "Title is required")
+    @Size(min = 3, max = 200, message = "Title must be between 3 and 200 characters")
     private String title;
-    private String category;
-    private String type;
-    private String location;
+
+    @NotBlank(message = "Description is required")
+    @Size(min = 10, message = "Description must be at least 10 characters")
     private String description;
-    private String image;
-    private String status;
-    private Long userId;
-    private String userName;
-    private LocalDateTime createdAt;
 
-    public ItemDTO() {
-    }
+    @NotNull(message = "Category is required")
+    private Long categoryId;
 
-    public ItemDTO(Long id, String title, String category, String type, String location, String description,
-            String image, String status, Long userId, String userName, LocalDateTime createdAt) {
-        this.id = id;
-        this.title = title;
-        this.category = category;
-        this.type = type;
-        this.location = location;
-        this.description = description;
-        this.image = image;
-        this.status = status;
-        this.userId = userId;
-        this.userName = userName;
-        this.createdAt = createdAt;
-    }
+    private String color;
+    private String brand;
 
-    public Long getId() {
-        return id;
-    }
+    @NotNull(message = "Status is required")
+    private ItemStatus status;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @NotBlank(message = "Location is required")
+    private String location;
 
+    @NotNull(message = "Date is required")
+    @PastOrPresent(message = "Date cannot be in the future")
+    private LocalDate dateCreated;
+
+    // Manual Getters and Setters to ensure binding works consistently
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
     }
 
     public String getDescription() {
@@ -86,59 +53,51 @@ public class ItemDTO {
         this.description = description;
     }
 
-    public String getImage() {
-        return image;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public String getStatus() {
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public ItemStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ItemStatus status) {
         this.status = status;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getLocation() {
+        return location;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
-    public String getUserName() {
-        return userName;
+    public LocalDate getDateCreated() {
+        return dateCreated;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public static ItemDTO fromEntity(Item item) {
-        ItemDTO dto = new ItemDTO();
-        dto.setId(item.getId());
-        dto.setTitle(item.getTitle());
-        dto.setCategory(item.getCategory());
-        dto.setType(item.getType().name());
-        dto.setLocation(item.getLocation());
-        dto.setDescription(item.getDescription());
-        dto.setImage(item.getImage());
-        dto.setStatus(item.getStatus().name());
-        dto.setUserId(item.getUser().getId());
-        dto.setUserName(item.getUser().getName());
-        dto.setCreatedAt(item.getCreatedAt());
-        return dto;
+    public void setDateCreated(LocalDate dateCreated) {
+        this.dateCreated = dateCreated;
     }
 }

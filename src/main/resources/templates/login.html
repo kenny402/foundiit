@@ -1,46 +1,184 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{layouts/main :: head('Login')}"></head>
+<head>
+    <meta charset="UTF-8">
+    <title>Login - FoundIt+</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Outfit', 'Segoe UI', sans-serif;
+        }
 
-<body style="display: flex; flex-direction: column; min-h-screen;">
-    <nav th:replace="~{layouts/main :: navbar}"></nav>
+        body {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1A56DB 50%, #0EA5E9 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
-    <main style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem;">
-        <div class="glass-card" style="width: 100%; max-width: 400px;">
-            <h1 style="text-align: center; margin-bottom: 1.5rem;">Welcome Back</h1>
+        .login-card {
+            background: white;
+            border-radius: 28px;
+            border: none;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+            max-width: 440px;
+            width: 100%;
+            padding: 48px;
+            position: relative;
+            overflow: hidden;
+        }
 
-            <div th:if="${param.error}"
-                style="background: #fee2e2; color: var(--danger); padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 1rem; text-align: center;">
-                Invalid email or password.
-            </div>
-            <div th:if="${param.logout}"
-                style="background: #f0f9ff; color: var(--primary); padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 1rem; text-align: center;">
-                You have been logged out.
-            </div>
-            <div th:if="${param.success}"
-                style="background: #ecfdf5; color: var(--success); padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 1rem; text-align: center;">
-                Registration successful! Please login.
-            </div>
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, #0EA5E9, #1A56DB);
+        }
 
-            <form th:action="@{/login}" method="post">
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" name="username" class="form-control" required placeholder="name@example.com">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" name="password" class="form-control" required placeholder="••••••••">
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
-            </form>
-            <p style="text-align: center; margin-top: 1.5rem; color: var(--muted);">
-                New here? <a th:href="@{/register}" style="color: var(--primary);">Create an account</a>
-            </p>
+        .brand {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #1A56DB;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, #1A56DB, #0EA5E9);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            transition: all 0.2s;
+            box-shadow: 0 10px 20px rgba(26, 86, 219, 0.2);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(26, 86, 219, 0.3);
+            color: white;
+        }
+
+        .form-control {
+            border: 2px solid #F1F5F9;
+            border-radius: 12px;
+            padding: 14px 18px;
+            background: #F8FAFC;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: #1A56DB;
+            background: white;
+            box-shadow: none;
+        }
+
+        .back-home {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 24px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.8;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .back-home:hover {
+            opacity: 1;
+            transform: translateX(-3px);
+        }
+
+        .copyright {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+            margin-top: 32px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <a th:href="@{/}" class="back-home">
+        <i class="bi bi-arrow-left"></i> Back to Homepage
+    </a>
+
+    <div class="login-card">
+        <div class="brand"><i class="bi bi-search-heart text-primary"></i> FoundIt<span class="text-secondary">+</span>
         </div>
-    </main>
+        <p class="text-center text-muted mb-4 fw-medium">Welcome back! Please sign in.</p>
 
-    <footer th:replace="~{layouts/main :: footer}"></footer>
+        <div th:if="${param.error}"
+            class="alert alert-danger border-0 rounded-3 py-3 small d-flex align-items-center mb-4">
+            <i class="bi bi-exclamation-circle-fill me-3 fs-5"></i>
+            Invalid email or password.
+        </div>
+
+        <div th:if="${param.logout}"
+            class="alert alert-info border-0 rounded-3 py-3 small d-flex align-items-center mb-4">
+            <i class="bi bi-info-circle-fill me-3 fs-5"></i>
+            Logged out successfully.
+        </div>
+
+        <div th:if="${param.registered}"
+            class="alert alert-success border-0 rounded-3 py-3 small d-flex align-items-center mb-4">
+            <i class="bi bi-check-circle-fill me-3 fs-5"></i>
+            Account created! Please sign in.
+        </div>
+
+        <form th:action="@{/login}" method="post">
+            <div class="mb-3">
+                <label class="form-label fw-bold small text-muted text-uppercase mb-2" style="letter-spacing:1px;">Email
+                    Address</label>
+                <input type="email" name="email" class="form-control" placeholder="name@example.com" required autofocus>
+            </div>
+            <div class="mb-4">
+                <div class="d-flex justify-content-between">
+                    <label class="form-label fw-bold small text-muted text-uppercase mb-2"
+                        style="letter-spacing:1px;">Password</label>
+                    <a href="#" class="small text-decoration-none text-primary fw-semibold">Forgot?</a>
+                </div>
+                <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+            </div>
+
+            <div class="mb-4 d-flex align-items-center">
+                <div class="form-check">
+                    <input type="checkbox" name="remember-me" id="rm" class="form-check-input">
+                    <label for="rm" class="form-check-label text-muted small fw-medium">Keep me signed in</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-login mb-4">
+                Sign In to Account
+            </button>
+
+            <div class="text-center small text-muted mb-1">
+                New to the platform? <a th:href="@{/register}" class="text-primary fw-bold text-decoration-none">Create
+                    Account</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="copyright text-center">
+        &copy; 2026 Imena Kenny | FoundIt+ Smart System
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

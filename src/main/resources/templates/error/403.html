@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: layout(~{::main})}">
+<body>
+    <main>
+        <div class="container py-5 text-center">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="py-5">
+                        <div class="display-1 fw-bold text-danger mb-4"><i class="bi bi-shield-lock-fill"></i></div>
+                        <h1 class="fw-bold">403 - Access Denied</h1>
+                        <p class="text-secondary lead mb-5">Sorry, you don't have permission to access this page. This area is restricted based on your current role.</p>
+                        <div class="d-flex justify-content-center gap-3">
+                            <a th:href="@{/}" class="btn btn-primary px-4 rounded-pill fw-bold shadow">Return Home</a>
+                            <a th:href="@{/dashboard}" class="btn btn-outline-secondary px-4 rounded-pill fw-bold">My Dashboard</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

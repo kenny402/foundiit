@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+    th:fragment="layout(content)">
+
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title != null ? title + ' | FoundIt+' : 'FoundIt+ - Smart Lost &amp; Found'}">FoundIt+</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Outfit', 'Segoe UI', sans-serif;
+            background: #f8fafc;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+    <!-- Shared Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Flash Messages -->
+    <div class="container mt-3">
+        <div th:if="${successMessage}"
+            class="alert alert-success alert-dismissible fade show shadow-sm border-0 border-start border-success border-4"
+            role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <span th:text="${successMessage}">Success!</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        <div th:if="${errorMessage}"
+            class="alert alert-danger alert-dismissible fade show shadow-sm border-0 border-start border-danger border-4"
+            role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <span th:text="${errorMessage}">Error!</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="py-4 min-vh-100">
+        <div th:replace="${content}"></div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-5 mt-5" style="background:#0F172A;color:#94A3B8;">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <h5 class="fw-bold mb-3" style="color:white;"><i
+                            class="bi bi-search-heart me-2 text-primary"></i>FoundIt+</h5>
+                    <p style="font-size:0.9rem;">A smart lost, found, and claim verification system designed to help
+                        people reconnect with their belongings.</p>
+                </div>
+                <div class="col-md-2 offset-md-1">
+                    <h6 class="fw-bold mb-3" style="color:white;">Quick Links</h6>
+                    <ul class="list-unstyled" style="font-size:0.9rem;">
+                        <li><a th:href="@{/}" class="text-secondary text-decoration-none">Home</a></li>
+                        <li><a th:href="@{/items/list}" class="text-secondary text-decoration-none">Browse</a></li>
+                        <li><a th:href="@{/items/report}" class="text-secondary text-decoration-none">Report Item</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-5 text-md-end">
+                    <h6 class="fw-bold mb-3" style="color:white;">FoundIt+ Platform</h6>
+                    <p style="font-size:0.85rem;">Connecting people who have lost items with those who have found them.
+                    </p>
+                </div>
+            </div>
+            <hr style="border-color:#1E293B;" class="my-4">
+            <div class="text-center" style="font-size:0.85rem;">&copy; 2026 Imena Kenny | FoundIt+ Smart System
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

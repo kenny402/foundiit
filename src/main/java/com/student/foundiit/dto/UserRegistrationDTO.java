@@ -1,22 +1,32 @@
 package com.student.foundiit.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-public class UserRegistrationDTO {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserRegistrationDto {
+
+    @NotBlank(message = "Name is required")
+    @Size(min = 2, message = "Name must be at least 2 characters")
     private String name;
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Please enter a valid email")
     private String email;
+
+    private String phone;
+
+    @NotBlank(message = "Password is required")
+    @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
 
-    public UserRegistrationDTO() {
-    }
-
-    public UserRegistrationDTO(String name, String email, String password) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-    }
+    private String confirmPassword;
 
     public String getName() {
         return name;
@@ -34,11 +44,27 @@ public class UserRegistrationDTO {
         this.email = email;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }

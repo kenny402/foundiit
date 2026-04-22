@@ -17,7 +17,7 @@
             </div>
 
             <form th:action="@{/claims/submit}" th:object="${claim}" method="post">
-                <input type="hidden" name="itemId" th:value="${item.id}">
+                <input type="hidden" name="itemId" th:value="${item.itemId}">
 
                 <div class="form-group">
                     <label>Proof of Ownership</label>
@@ -28,7 +28,7 @@
 
                 <div style="margin-top: 2rem;">
                     <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Claim Request</button>
-                    <a th:href="@{'/items/' + ${item.id}}"
+                    <a th:href="@{'/items/' + ${item.itemId}}"
                         style="display: block; text-align: center; margin-top: 1rem; color: var(--secondary); text-decoration: none;">Go
                         Back</a>
                 </div>
