@@ -31,3 +31,18 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Project Specific ###
+uploads/
+*.log
+build_errors.txt
+clean_errors.txt
+mvn_error_ascii.txt
+run_output.txt
+startup.log
+startup2.log
+run_log.txt
+.compass/
+.tmp-auth-test/
+.tmp-auth-test-report/
+data/

@@ -159,8 +159,8 @@ D:\foundiit-master\uploads\items\
 ### View Logs
 Application logs go to:
 ```
-D:\foundiit-master\latest_build.log
-D:\foundiit-master\run_output.txt
+D:\foundiit-master\logs\latest_build.log
+D:\foundiit-master\logs\run_output.txt
 ```
 
 ### Database Query
@@ -368,5 +368,5 @@ The Item Reporting Feature is fully implemented and ready for production use.
 
 **You're all set! 🎉**
 
-*For detailed documentation, see: `ITEM_REPORTING_COMPLETE_GUIDE.md`*
+*For detailed documentation, see: `ITEM_REPORTING_COMPLETE_GUIDE.md` (in the same folder)*
 

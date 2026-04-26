@@ -1,403 +1,134 @@
-# FoundIt+ Item Reporting Feature
+# FoundIt+ (FoundIIt)
+### Smart Lost & Found and Claim Verification System
 
-## ✅ Implementation Complete!
+[![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://www.oracle.com/java/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.0-brightgreen.svg)](https://spring.io/projects/spring-boot)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0-blue.svg)](https://www.mysql.com/)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-The **Item Reporting Feature** for FoundIt+ has been **successfully implemented, compiled, and packaged** for deployment.
-
----
-
-## 🎯 What is This Feature?
-
-This feature allows users to:
-- **Report lost items** they're looking for
-- **Report found items** they've discovered
-- **Upload photos** of items
-- **Browse all items** posted by other users
-- **Track their own reports** and close cases when resolved
-- **Search and filter** items by category or status
+FoundIt+ is a comprehensive, secure, and user-friendly web application designed to bridge the gap between people who have lost items and those who have found them. Built with a robust Spring Boot backend and a responsive Thymeleaf frontend, it provides a reliable platform for reporting, searching, and claiming items.
 
 ---
 
-## ✨ Key Features Implemented
+## 🌟 Key Features
 
-✅ **Item Reporting**
-- Multi-field form (title, description, location, category, brand, color, date)
-- Status selection (LOST or FOUND)
-- Image upload with validation
-- Form validation with error messages
+### 🔍 Search & Discovery
+*   **Intuitive Browsing**: View all lost and found items in a clean, paginated list.
+*   **Smart Filtering**: Filter items by status (LOST/FOUND/CLAIMED), category, or location.
+*   **Keyword Search**: Quickly find items using search terms.
+*   **Detailed Views**: Access comprehensive item details, including high-resolution images, descriptions, and discovery dates.
 
-✅ **Item Management**
-- View all items with pagination
-- Filter by status (LOST/FOUND)
-- Search by keyword
-- View detailed item information
-- Track view counts
-- Close resolved cases
+### 📝 Reporting & Management
+*   **Streamlined Reporting**: Simplified multi-field forms for reporting lost or found items.
+*   **Photo Uploads**: Secure image uploading with automatic UUID-based file storage.
+*   **Personal Dashboard**: Track your own reports and manage their status from a single location.
+*   **Case Resolution**: Close resolved cases or update item status as they are claimed.
 
-✅ **Security**
-- User authentication required
-- Authorization checks (only reporter can close their items)
-- Input validation on all forms
-- File upload security (type & size validation)
-- CSRF protection
+### 🛡️ Security & Reliability
+*   **Secure Authentication**: Role-based access control powered by Spring Security.
+*   **Privacy Protection**: Reporter-only access for managing specific items.
+*   **Reliable Verification**: Built-in verification mechanisms for claims.
+*   **Input Validation**: Robust server-side validation to ensure data integrity.
 
-✅ **Technical**
-- Clean layered architecture
-- Comprehensive error handling
-- Detailed logging for debugging
-- Database persistence
-- Responsive UI design
-- File storage with UUID randomization
+---
+
+## 💻 Technology Stack
+
+| Component | Technology |
+| :--- | :--- |
+| **Backend** | Java 17, Spring Boot 3.2.0, Spring Data JPA |
+| **Frontend** | Thymeleaf, HTML5, CSS3, JavaScript |
+| **Security** | Spring Security 6 (Auth, CSRF, Authorization) |
+| **Database** | MySQL 8.0+ |
+| **Documentation** | Apache POI (Excel), OpenPDF (PDF generation) |
+| **Build Tool** | Maven 3.9+ |
 
 ---
 
 ## 📂 Project Structure
 
-```
+```text
 foundiit-master/
 ├── src/main/java/com/student/foundiit/
-│   ├── controller/
-│   │   └── ItemController.java          [6 endpoints]
-│   ├── model/
-│   │   ├── Item.java                   [Entity with 14 fields]
-│   │   └── ItemStatus.java              [LOST/FOUND/CLAIMED/CLOSED]
-│   ├── service/
-│   │   ├── ItemService.java             [Interface]
-│   │   └── impl/
-│   │       └── ItemServiceImpl.java      [Business logic with logging]
-│   │   └── FileUploadService.java       [File handling]
-│   ├── repository/
-│   │   └── ItemRepository.java          [6 custom queries]
-│   └── dto/
-│       └── ItemDto.java                 [Validation rules]
-│
+│   ├── controller/      # Web controllers handling routes
+│   ├── service/        # Business logic & file handling
+│   ├── repository/     # Data access layer (JPA)
+│   ├── model/         # Database entities
+│   └── dto/           # Data Transfer Objects & Validation
 ├── src/main/resources/
-│   ├── application.properties            [Configuration]
-│   └── templates/items/
-│       ├── report.html                   [Report form]
-│       ├── my-items.html                [User's items]
-│       ├── list.html                    [Browse items]
-│       └── detail.html                  [Item details]
-│
-└── target/
-    └── foundiit-0.0.1-SNAPSHOT.jar      [70.32 MB - Ready to run]
+│   ├── templates/     # UI HTML pages (Thymeleaf)
+│   ├── static/        # CSS, JS, and static assets
+│   └── application.properties # Core configuration
+├── docs/              # Detailed technical documentation
+├── sql/               # SQL scripts for database setup
+├── logs/              # Application and build logs
+├── uploads/           # User-uploaded item images
+└── pom.xml            # Project dependencies & build config
 ```
 
 ---
 
-## 🚀 Quick Start (5 Minutes)
+## 🚀 Getting Started
 
-### 1. Prepare Database
+### 📋 Prerequisites
+*   **Java 17** or higher
+*   **MySQL Server** (Running locally or remotely)
+*   **Maven** 3.6+
+
+### 🛠️ Installation
+
+1.  **Clone & Navigate**:
+    ```bash
+    cd foundiit-master
+    ```
+
+2.  **Database Setup**:
+    ```sql
+    CREATE DATABASE foundiit;
+    ```
+    *Apply schema from `setup_tables.sql` if manual setup is preferred.*
+
+3.  **Create Upload Folders**:
+    ```bash
+    mkdir uploads/items uploads/claims uploads/profiles
+    ```
+
+4.  **Build Project**:
+    ```bash
+    mvn clean compile
+    ```
+
+### 🏃 Running the App
+
+Execute the following command in the project root:
 ```bash
-mysql -u root -p
-CREATE DATABASE foundiit;
+mvn spring-boot:run
 ```
-
-### 2. Create Upload Directories
-```bash
-mkdir uploads/items uploads/claims uploads/profiles
-```
-
-### 3. Run Application
-```bash
-cd D:\foundiit-master
-java -jar target/foundiit-0.0.1-SNAPSHOT.jar
-```
-
-Or:
-```bash
-.\mvnw.cmd spring-boot:run
-```
-
-### 4. Access Application
-```
-http://localhost:8080/
-```
-
-### 5. Test Feature
-- Register at `/register`
-- Go to `/items/report`
-- Fill form and submit
-- See success at `/items/my-items`
+Once started, access the application at: **`http://localhost:8080/`**
 
 ---
 
-## 📖 Documentation
+## 📖 Available Documentation
 
-Three comprehensive guides are included:
+For deeper technical details, please refer to our specialized guides:
 
-1. **QUICK_START_GUIDE.md** (300 lines)
-   - Fast setup instructions
-   - Testing scenarios
-   - Troubleshooting
-
-2. **ITEM_REPORTING_COMPLETE_GUIDE.md** (800+ lines)
-   - Detailed component descriptions
-   - Database schema
-   - API documentation
-   - Security implementation
-
-3. **IMPLEMENTATION_SUMMARY.md** (500+ lines)
-   - Architecture overview
-   - Compilation status
-   - Performance metrics
-   - Deployment instructions
+*   [**Quick Start Guide**](docs/QUICK_START_GUIDE.md) - Get up and running in 5 minutes.
+*   [**Technical Implementation Summary**](docs/IMPLEMENTATION_SUMMARY.md) - Architecture & metrics.
+*   [**Complete Feature Guide**](docs/ITEM_REPORTING_COMPLETE_GUIDE.md) - Detailed component docs.
+*   [**Deployment Checklist**](docs/DEPLOYMENT_CHECKLIST.md) - Preparation for production.
+*   [**Documentation Index**](docs/DOCUMENTATION_INDEX.md) - A full list of all available project documentation.
 
 ---
 
-## 📊 Build Status
+## 📝 Configuration
 
-```
-✅ Build Status: SUCCESS
-✅ Compilation: No errors
-✅ JAR Created: foundiit-0.0.1-SNAPSHOT.jar (70.32 MB)
-✅ Ready for: Testing & Deployment
-```
+Key settings in `src/main/resources/application.properties`:
+*   `spring.datasource.url`: Database connection URL.
+*   `file.upload-dir`: Location for storing images (default: `./uploads/`).
+*   `server.port`: Application port (default: 8080).
 
 ---
 
-## 🏗️ Architecture at a Glance
-
-```
-User Interface (HTML Templates)
-         ↓
-    Controllers (API Endpoints)
-         ↓
-   Services (Business Logic)
-         ↓
-   Repositories (Database Queries)
-         ↓
-    MySQL Database
-```
-
----
-
-## 📋 API Endpoints
-
-| Method | Endpoint | Purpose |
-|--------|----------|---------|
-| GET | `/items/report` | Show report form |
-| POST | `/items/report` | Submit item report |
-| GET | `/items/list` | Browse all items |
-| GET | `/items/{id}` | View item details |
-| GET | `/items/my-items` | View your reports |
-| POST | `/items/close/{id}` | Close a case |
-
----
-
-## 🔐 Security Features
-
-- ✅ Spring Security authentication
-- ✅ User authorization (reporter-only access)
-- ✅ CSRF token protection
-- ✅ Input validation (server-side)
-- ✅ File upload validation (type & size)
-- ✅ UUID-based file storage (prevents enumeration)
-- ✅ SQL injection prevention (JPA parameterized queries)
-
----
-
-## 📦 Database Schema (Simplified)
-
-### Items Table
-```
-item_id          BIGINT (Primary Key)
-title            VARCHAR (Required)
-description      LONGTEXT
-location         VARCHAR
-brand            VARCHAR
-color            VARCHAR
-image_path       VARCHAR (File path)
-category_id      BIGINT (FK → categories)
-reported_by      BIGINT (FK → users)
-views            INT (Default: 0)
-date_created     DATE
-created_at       DATETIME (Auto-set)
-updated_at       DATETIME (Auto-set)
-status           ENUM (LOST/FOUND/CLAIMED/CLOSED)
-```
-
----
-
-## 🧪 Testing Checklist
-
-- [ ] Application starts without errors
-- [ ] Can register and login
-- [ ] Can access report form
-- [ ] Can submit item with image
-- [ ] See success message
-- [ ] Item appears in my-items
-- [ ] Can view item details
-- [ ] Can search items
-- [ ] Can filter by status
-- [ ] Can close cases
-- [ ] Images display correctly
-- [ ] Database contains correct data
-
----
-
-## 💻 System Requirements
-
-| Requirement | Minimum | Recommended |
-|------------|---------|-------------|
-| Java | 17 | 21+ |
-| Maven | 3.6 | 3.9+ |
-| MySQL | 8.0 | 8.0+ |
-| RAM | 512 MB | 2 GB |
-| Disk | 100 MB | 500 MB |
-
----
-
-## 📝 Files Modified/Created
-
-### New Files Created
-- `QUICK_START_GUIDE.md`
-- `ITEM_REPORTING_COMPLETE_GUIDE.md`
-- `IMPLEMENTATION_SUMMARY.md`
-- `README.md` (this file)
-
-### Files Modified
-- `src/main/java/.../dto/UserRegistrationDto.java` (Added explicit getters)
-
-### Pre-existing (Verified & Complete)
-- `ItemController.java`
-- `ItemService.java` & `ItemServiceImpl.java`
-- `ItemRepository.java`
-- `FileUploadService.java`
-- `Item.java` & `ItemStatus.java`
-- `ItemDto.java`
-- `items/report.html`, `my-items.html`, `list.html`, `detail.html`
-- `application.properties`
-
----
-
-## 🚨 Important Notes
-
-### Configuration
-- **Database URL:** `jdbc:mysql://localhost:3306/foundiit`
-- **Database User:** `root`
-- **Database Password:** `` (empty)
-- **Upload Directory:** `./uploads/`
-- **Server Port:** `8080`
-
-All settings are in `application.properties`. Modify as needed for your environment.
-
-### File Uploads
-- **Max File Size:** 10 MB per file
-- **Max Request Size:** 15 MB total
-- **Allowed Types:** JPEG, PNG, GIF, WEBP
-- **Storage:** `uploads/items/` (UUID-prefixed filenames)
-
-### Logging
-SQL statements and debug info are logged to console. Check logs for:
-```
-[INFO]  ItemServiceImpl - Starting item report
-[DEBUG] ItemServiceImpl - Item saved successfully
-[INFO]  FileUploadService - File uploaded successfully
-```
-
----
-
-## 🐛 Troubleshooting
-
-### Build Issues
-```bash
-# Clean rebuild
-.\mvnw.cmd clean compile
-
-# Full package rebuild
-.\mvnw.cmd clean package -DskipTests
-```
-
-### Runtime Issues
-```bash
-# Check if port 8080 is in use
-netstat -ano | findstr :8080
-
-# Verify MySQL is running
-mysql -u root -p -e "SELECT 1"
-
-# Check database
-mysql -u root -p -e "SHOW DATABASES;"
-```
-
-### File Upload Issues
-- Ensure `uploads/` directory exists
-- Check file size (max 10 MB)
-- Verify file type (JPEG/PNG/GIF/WEBP)
-- Check disk space
-
----
-
-## 📞 Next Steps
-
-1. **Review Documentation**
-   - Read `QUICK_START_GUIDE.md` for setup
-   - Check `IMPLEMENTATION_SUMMARY.md` for details
-
-2. **Test the Feature**
-   - Follow testing checklist above
-   - Try all endpoints
-   - Test edge cases
-
-3. **Deploy**
-   - Copy JAR to production server
-   - Run: `java -jar foundiit-0.0.1-SNAPSHOT.jar`
-   - Monitor logs
-
-4. **Extend (Optional)**
-   - Add email notifications
-   - Implement auto-matching
-   - Add user ratings
-   - Create admin dashboard
-
----
-
-## ✅ Quality Assurance
-
-- ✅ **Code Quality:** Clean architecture, proper separation of concerns
-- ✅ **Error Handling:** Comprehensive try-catch, graceful fallback
-- ✅ **Logging:** Detailed logging at every critical point
-- ✅ **Security:** Authentication, authorization, input validation
-- ✅ **Testing:** Documentation includes test scenarios
-- ✅ **Documentation:** 3+ comprehensive guides provided
-- ✅ **Build:** Zero errors, warning-free compilation
-- ✅ **Deployment:** JAR ready for production
-
----
-
-## 🎉 Summary
-
-The FoundIt+ Item Reporting Feature is:
-
-✅ **Fully Implemented** - All 12+ components complete  
-✅ **Thoroughly Documented** - 3 comprehensive guides  
-✅ **Successfully Compiled** - Zero errors/warnings  
-✅ **Ready to Deploy** - JAR file (70.32 MB) ready  
-✅ **Production Quality** - Security, logging, error handling  
-✅ **Well Tested** - Multiple test scenarios documented  
-
----
-
-## 📞 Support
-
-For questions or issues:
-1. Check the troubleshooting section above
-2. Review the detailed guides
-3. Check application logs
-4. Verify database connection
-5. Ensure upload directories exist
-
----
-
-**Status:** 🟢 **READY FOR TESTING & DEPLOYMENT**
-
-**Version:** 1.0 Production Ready  
-**Built:** April 11, 2026  
-**Build Time:** ~45 seconds  
-**JAR Size:** 70.32 MB  
-
----
-
-*For detailed technical information, see the comprehensive guides in the project root.*
-
+## 🤝 Credits
+**Developed by:** Imena Kenny  
+**Copyright:** © 2026 Imena Kenny
